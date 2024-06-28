@@ -1,0 +1,28 @@
+<div class="employee-insert">
+    <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+      <mat-form-field appearance="fill" class="mx-2">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="employeeForm.get('name')?.hasError('required')">Name is required</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill"  class="mx-2">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required>
+        <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill"  class="mx-2">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role" required>
+          <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="employeeForm.get('role')?.hasError('required')">Role is required</mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button type="submit" color="primary"  class=" mx-2 btn btn-primary"  [disabled]="!employeeForm.valid">
+        {{ employee ? 'Update Employee' : 'Add Employee' }}</button>
+    </form>
+  </div>
+  

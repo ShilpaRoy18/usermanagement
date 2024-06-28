@@ -1,0 +1,85 @@
+<!-- src/app/employee-details/employee-details.component.html -->
+
+<div class="employee-details">
+
+  <div class="mat-elevation-z8 main_div">
+    <div class="d-flex justify-content-between">
+      <h2 class="text_underline">Employee Entry</h2>
+     
+  </div>
+    <app-employee-insert (employeeAdded)="onEmployeeAdded($event)" [employee]="selectedEmployee"></app-employee-insert>
+    <!-- Your table and pagination component -->
+  </div>
+  
+  <div class="mat-elevation-z8 main_div">
+    <div class="d-flex justify-content-between">
+    <h2 class="mb-0 text_underline">Employee Details</h2>
+   
+</div>
+    <mat-form-field appearance="standard">
+      <mat-label>Search By Name/Email</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name or email">
+    </mat-form-field>
+    <div class="table_div">
+    <table mat-table [dataSource]="paginatedEmployees" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sr No.</th>
+        <td mat-cell *matCellDef="let element; let i = index">{{i+1}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let element">{{element.email}}</td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let element">{{element.role}}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <button mat-button class="btn" (click)="editEmployee(element)"><i class="fa fa-pencil text-warning"></i></button>
+          <button mat-button color="warn" class="btn" (click)="setData(element.id)"  data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash text-danger"></i></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+    <ngb-pagination [collectionSize]="totalRecords" class="float-right pt-2" [(page)]="page" [pageSize]="pageSize" (pageChange)="onPageChange($event)"></ngb-pagination>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are You Sure To Delete?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteEmployee()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
